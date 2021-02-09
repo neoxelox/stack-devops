@@ -4,7 +4,9 @@ Forked from **`https://github.com/fluent/fluentd-kubernetes-daemonset/blob/maste
 
 ## Installation
 
-TODO
+## Documentation
+
+---
 
 ## Settings
 

@@ -4,8 +4,9 @@ Forked from **`https://github.com/elastic/helm-charts/tree/master/kibana`**, the
 
 ## Installation
 
-TODO
 `helm install kibana ./helm-charts/kibana --set imageTag=7.10.2`
+
+---
 
 ## Configuration
 

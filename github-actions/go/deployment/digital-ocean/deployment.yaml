@@ -1,0 +1,48 @@
+name: Deployment
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Setup Go 🐻
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.15.8'
+
+      - name: Lint 🪶
+        run: make lint
+
+      - name: Test 🧪
+        run: make test
+
+      - name: Setup Doctl 💧
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Build 🏗️
+        run: |
+          export APP_RELEASE_VERSION=$(echo $GITHUB_SHA | head -c7)
+          docker build -f ./Dockerfile . -t registry.digitalocean.com/neoxelox/shortr:${APP_RELEASE_VERSION}
+
+      - name: Push 📤
+        run: |
+          doctl registry login --expiry-seconds 180
+          docker push registry.digitalocean.com/neoxelox/shortr:${APP_RELEASE_VERSION}
+
+      - name: Setup Helm 🪖
+        uses: azure/setup-helm@v1
+        with:
+          version: 'v3.5.1'
+
+      - name: Deploy 🚀
+        run: |
+          doctl kubernetes cluster kubeconfig save --expiry-seconds 180 neoxelox
+          helm upgrade --install --atomic --wait --timeout 60s shortr ./ci/ -f ./ci/values.yaml --namespace applications --set=image.tag=${APP_RELEASE_VERSION}

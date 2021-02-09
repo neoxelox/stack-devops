@@ -4,7 +4,7 @@ Forked from **`https://github.com/sentry-kubernetes/charts`**, the license is ke
 
 ## Installation
 
-TODO
+---
 
 ## NGINX and/or Ingress
 

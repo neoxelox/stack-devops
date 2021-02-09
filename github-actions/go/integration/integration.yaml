@@ -1,0 +1,23 @@
+name: Integration
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Setup Go 🐻
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.15.8'
+
+      - name: Lint 🪶
+        run: make lint
+
+      - name: Test 🧪
+        run: make test

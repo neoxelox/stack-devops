@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "shortr.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "shortr.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- toYaml .Values.service.ports | nindent 4 }}
+  selector:
+    {{- include "shortr.selectorLabels" . | nindent 4 }}

@@ -1,0 +1,127 @@
+namespace: applications
+nameOverride: "shortr"
+fullnameOverride: "shortr"
+
+image:
+  repository: registry.digitalocean.com/neoxelox/shortr
+  tag: "latest"
+  pullPolicy: IfNotPresent
+  pullSecrets:
+    - name: registry-neoxelox
+
+scaling:
+  replicas: 1
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+environment:
+  - name: "APP_PORT"
+    value: "80"
+  - name: "APP_SSL_ENABLED"
+    value: "false"
+  - name: "DATABASE_HOST"
+    valueFrom:
+      secretKeyRef:
+        name: database
+        key: host
+  - name: "DATABASE_PORT"
+    valueFrom:
+      secretKeyRef:
+        name: database
+        key: port
+  - name: "DATABASE_USER"
+    valueFrom:
+      secretKeyRef:
+        name: database
+        key: user
+  - name: "DATABASE_PASSWORD"
+    valueFrom:
+      secretKeyRef:
+        name: database
+        key: password
+  - name: "DATABASE_NAME"
+    valueFrom:
+      secretKeyRef:
+        name: database
+        key: name
+  - name: "APP_SSL_ENABLED"
+    value: "false"
+  - name: "VIRTUAL_HOST"
+    value: "shortr.neoxelox.com"
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+ports:
+  - name: http
+    containerPort: 80
+    protocol: TCP
+
+service:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: http # containerPort
+      # nodePort: 30010
+      protocol: TCP
+
+probes:
+  readiness:
+    initialDelaySeconds: 5
+    periodSeconds: 1
+    failureThreshold: 5
+    httpGet:
+      path: /health
+      port: http
+  liveness:
+    initialDelaySeconds: 5
+    periodSeconds: 1
+    failureThreshold: 5
+    httpGet:
+      path: /health
+      port: http
+
+ingress:
+  enabled: true
+  servicePort: http
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    # cert-manager.io/cluster-issuer: "letsencrypt-staging"
+  hosts:
+    - host: shortr.neoxelox.com
+      paths:
+        - path: /*
+    - host: www.shortr.neoxelox.com
+      paths:
+        - path: /*
+  tls:
+    []
+    # - secretName: tls-shortr-neoxelox-com
+    #   hosts:
+    #     - shortr.neoxelox.com
+    # - secretName: tls-www-shortr-neoxelox-com
+    #   hosts:
+    #     - www.shortr.neoxelox.com
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}

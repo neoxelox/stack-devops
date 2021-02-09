@@ -4,8 +4,16 @@ Forked from **`https://github.com/kubernetes/dashboard/tree/master/aio/deploy/he
 
 ## Installation
 
-TODO
-`helm install kubernetes-dashboard/kubernetes-dashboard --name my-release`
+`helm upgrade --install --atomic --wait --timeout 60s kubernetes-dashboard . -f ./values-override.yaml --namespace kube-control`
+
+## Documentation
+
+> **Access Kubernetes Dashboard deployed as a ClusterIP service.**
+
+Run `kubectl proxy`.
+Go to: `http://localhost:8001/api/v1/namespaces/kube-control/services/https:kubernetes-dashboard:https/proxy/`
+
+---
 
 ## Getting Started
 

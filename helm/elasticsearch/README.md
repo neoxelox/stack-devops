@@ -2,17 +2,19 @@
 
 Forked from **`https://github.com/elastic/helm-charts/tree/master/elasticsearch`**, the license is kept as is.
 
+## Installation
+
+`helm install elasticsearch ./helm-charts/elasticsearch --set imageTag=7.10.2`
+
+---
+
 ## Requirements
 
-- Minimum cluster requirements include the following to run this chart with
-  default settings. All of these settings are configurable.
-  - Three Kubernetes nodes to respect the default "hard" affinity settings
-  - 1GB of RAM for the JVM heap
+Minimum cluster requirements include the following to run this chart with
+default settings. All of these settings are configurable.
 
-## Installing
-
-TODO
-`helm install elasticsearch ./helm-charts/elasticsearch --set imageTag=7.10.2`
+- Three Kubernetes nodes to respect the default "hard" affinity settings
+- 1GB of RAM for the JVM heap
 
 ## Usage notes
 

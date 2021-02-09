@@ -2,10 +2,15 @@
 
 Forked from **`https://github.com/elastic/helm-charts/tree/master/apm-server`**, the license is kept as is.
 
-## Installing
+## Installation
 
-TODO
 `helm install apm-server ./helm-charts/apm-server --set imageTag=7.10.2`
+
+## Documentation
+
+- https://www.elastic.co/guide/en/apm/agent/go/current/builtin-modules.html
+
+---
 
 ## Usage notes
 
@@ -62,8 +67,6 @@ credentials or certificates for examples. These secrets should be created
 outside of this chart and accessed using [environment variables][] and volumes.
 
 An example can be found in [examples/security][].
-
-## Contributing
 
 [7.10]: https://github.com/elastic/helm-charts/releases
 [breaking_changes.md]: https://github.com/elastic/helm-charts/blob/master/BREAKING_CHANGES.md
