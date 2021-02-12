@@ -17,4 +17,8 @@ Run `doctl registry login`.
 Build and tag image `docker build -f <PATH TO DOCKERFILE> <PATH TO CONTEXT> -t registry.digitalocean.com/<REGISTRY>/<IMAGE>:<TAG>`.
 Push `docker push registry.digitalocean.com/<REGISTRY>/<IMAGE>:<TAG>`.
 
+> **Logout from Digital Ocean private registry.**
+
+Run `doctl registry logout `.
+
 # Docker-Compose

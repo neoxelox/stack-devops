@@ -10,12 +10,12 @@ image:
     - name: registry-neoxelox
 
 scaling:
-  replicas: 1
+  replicas: 3 # Number of Nodes
 
 resources:
-  limits:
-    cpu: 200m
-    memory: 256Mi
+  # limits: # Enable this if autoscaling on
+  #   cpu: 200m
+  #   memory: 256Mi
   requests:
     cpu: 100m
     memory: 128Mi
@@ -50,15 +50,13 @@ environment:
       secretKeyRef:
         name: database
         key: name
-  - name: "APP_SSL_ENABLED"
-    value: "false"
   - name: "VIRTUAL_HOST"
     value: "shortr.neoxelox.com"
 
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 1
-  maxReplicas: 10
+  maxReplicas: 3 # Number of Nodes
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
@@ -72,7 +70,7 @@ service:
   ports:
     - name: http
       port: 80
-      targetPort: http # containerPort
+      targetPort: 80 # containerPort
       # nodePort: 30010
       protocol: TCP
 
@@ -94,17 +92,17 @@ probes:
 
 ingress:
   enabled: true
-  servicePort: http
+  servicePort: 80
   annotations:
     kubernetes.io/ingress.class: nginx
     # cert-manager.io/cluster-issuer: "letsencrypt-staging"
   hosts:
     - host: shortr.neoxelox.com
       paths:
-        - path: /*
+        - path: /
     - host: www.shortr.neoxelox.com
       paths:
-        - path: /*
+        - path: /
   tls:
     []
     # - secretName: tls-shortr-neoxelox-com

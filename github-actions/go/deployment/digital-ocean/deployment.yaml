@@ -27,15 +27,17 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
+      - name: Get Cache 📦
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
+
       - name: Build 🏗️
-        run: |
-          export APP_RELEASE_VERSION=$(echo $GITHUB_SHA | head -c7)
-          docker build -f ./Dockerfile . -t registry.digitalocean.com/neoxelox/shortr:${APP_RELEASE_VERSION}
+        run: docker build -f ./Dockerfile . -t registry.digitalocean.com/neoxelox/shortr:$(echo $GITHUB_SHA | head -c7)
 
       - name: Push 📤
         run: |
           doctl registry login --expiry-seconds 180
-          docker push registry.digitalocean.com/neoxelox/shortr:${APP_RELEASE_VERSION}
+          docker push registry.digitalocean.com/neoxelox/shortr:$(echo $GITHUB_SHA | head -c7)
 
       - name: Setup Helm 🪖
         uses: azure/setup-helm@v1
@@ -44,5 +46,5 @@ jobs:
 
       - name: Deploy 🚀
         run: |
-          doctl kubernetes cluster kubeconfig save --expiry-seconds 180 neoxelox
-          helm upgrade --install --atomic --wait --timeout 60s shortr ./ci/ -f ./ci/values.yaml --namespace applications --set=image.tag=${APP_RELEASE_VERSION}
+          doctl kubernetes cluster kubeconfig save --expiry-seconds 180 do-test-k8s
+          helm upgrade --install --atomic --wait --timeout 60s shortr ./ci/ -f ./ci/values.yaml --namespace applications --set=image.tag=$(echo $GITHUB_SHA | head -c7)

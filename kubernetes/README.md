@@ -23,7 +23,7 @@ microk8s.enable dns
 - Add Digital Ocean private registry Secret.
 - Install Metrics Server.
 - Install NGINX Ingress Controller.
-- Add an `A` record in the domain DNS pointing to the created load balancer IP.
+- Add an `A` record in the domain DNS pointing to the created load balancer IP and wait until it resolves the hostname.
 - Deploy an example chart and test http connection.
 - Install Cert Manager and LetsEncrypt ClusterIssuers.
 - Update example chart with ingress tls activated and Test https connection.
@@ -83,6 +83,29 @@ The parameter `-c <CONTAINER>` helps if the Pod have more than one container ins
 > **Delete all resources of a Namespace.**
 
 Run `kubectl delete all --all --namespace <NAMESPACE>`.
+
+> **List HTTPS Certificates.**
+
+Run `kubectl get certificates` and `kubectl describe certificates <CERTIFICATE>`.
+
+Important, providers like letsencrypt do rate limit the provision of certificates of around 1 try every hour.
+Always test correct provisioning with the staging environtment first!
+
+> **Delete a Kubernetes Cluster from kubectl.**
+
+Run: (The values below can be obtained by viewing the kubeconfig file)
+
+```
+kubectl config delete-cluster <CLUSTER>
+kubectl config delete-context <CONTEXT>
+kubectl config unset users.<USER>
+```
+
+> **HPA vs Replicas.**
+
+In both the maximum number of replicas must be the number of Nodes of the cluster, so that each pod gets assigned to a different Node. Other than for redundancy, it does not make sense to have more than one instance running on the same Node.
+
+The resource metric targets for the HPA are always calculated on base the `requests` not the `limits`, and you cannot leave blank the `limits` one. So, if you have a small Kubernetes cluster, it is better to use fixed Replicas in the Deployment without, or pretty high, resource `limits`. Otherwise, the overhead of having so many instances created by the HPA vs the low resource `requests` and `limits` settings, is too high.
 
 ---
 

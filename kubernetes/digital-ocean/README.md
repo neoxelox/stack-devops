@@ -38,6 +38,14 @@ Controller Service:
   - `service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'`
   - `service.beta.kubernetes.io/do-loadbalancer-size-slug: 'lb-small'`
 
+Controller ConfigMap:
+
+- `Data`:
+  - `use-proxy-protocol: 'true'`
+  - `enable-brotli: 'true'` or `use-gzip: 'true'`
+
+For more detailed and advanced configuration for the NGINX Ingress Controller go to `https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/`.
+
 Controller Deployment:
 
 - `replicas`
@@ -51,6 +59,11 @@ Controller HPA:
 - `targetAverageUtilization`
 
 ## Errors
+
+> **Ingress responding with 404 and not redirecting to the specified backend because of svc/NAMESPACE does not have any active endpoint.**
+
+The NGINX Ingress controller does not work with paths like `/*`, use `/` instead if the whole host is desired.
+It also have bugs in some releases where setting targetPort and servicePort in Services and Ingresses as names do not work, instead use always the numerical value.
 
 ## Documentation
 
