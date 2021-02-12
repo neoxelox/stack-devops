@@ -396,12 +396,12 @@ spec:
               mountPath: /usr/local/certificates/
               readOnly: true
           resources:
-            limits: # Disabled if autoscaling off
-              cpu: 600m
-              memory: 600Mi
+            # limits: # Disabled if autoscaling off
+            #   cpu: 600m
+            #   memory: 600Mi
             requests:
-              cpu: 150m # 100m if autoscaling off
-              memory: 150Mi # 90Mi if autoscaling off
+              cpu: 100m # 100m if autoscaling off
+              memory: 90Mi # 90Mi if autoscaling off
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: ingress-nginx
