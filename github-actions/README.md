@@ -31,6 +31,15 @@ Add this step before the Docker Build or Docker-Compose:
 
 For fast builds or not good Dockerfiles that may always invalidate almost all the layers, it is faster not to use the cache.
 
+> **Create tag of current commit and push it along.**
+
+Run:
+
+```
+git tag -a v1.0.0 -m "First version"
+git push --follow-tags
+```
+
 ---
 
 - https://github.com/actions/cache

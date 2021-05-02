@@ -26,6 +26,8 @@ _`Note: almost all things are forked resources, and thus, they do keep the origi
 - [**`Resources`**](platforms/digital-ocean/README.md)
   - [**`Install Doctl`**](platforms/digital-ocean#Install-Doctl)
 - [**`App Platform`**](platforms/digital-ocean/app-platform/README.md)
+- [**`Managed PostgreSQL`**](platforms/digital-ocean/postgresql/README.md)
+- [**`Spaces`**](platforms/digital-ocean/spaces/README.md)
 
 #### `Terraform`
 

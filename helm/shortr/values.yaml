@@ -100,9 +100,11 @@ ingress:
     - host: shortr.neoxelox.com
       paths:
         - path: /
+        - pathType: Prefix
     - host: www.shortr.neoxelox.com
       paths:
         - path: /
+        - pathType: Prefix
   tls:
     []
     # - secretName: tls-shortr-neoxelox-com
@@ -112,11 +114,20 @@ ingress:
     #   hosts:
     #     - www.shortr.neoxelox.com
 
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchExpressions:
+        - key: "app.kubernetes.io/component"
+          operator: In
+          values:
+          - shortr
+      topologyKey: "kubernetes.io/hostname"
+
 nodeSelector: {}
 
 tolerations: []
-
-affinity: {}
 
 podAnnotations: {}
 

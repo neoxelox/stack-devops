@@ -15,6 +15,13 @@ doctl auth switch --context <NAME>
 doctl account get
 ```
 
+## Add SSH Key
+
+```
+ssh-keygen
+cat ~/.ssh/id_rsa.pub
+```
+
 ## Documentation
 
 - https://www.digitalocean.com/docs/volumes/

@@ -107,6 +107,19 @@ In both the maximum number of replicas must be the number of Nodes of the cluste
 
 The resource metric targets for the HPA are always calculated on base the `requests` not the `limits`, and you cannot leave blank the `limits` one. So, if you have a small Kubernetes cluster, it is better to use fixed Replicas in the Deployment without, or pretty high, resource `limits`. Otherwise, the overhead of having so many instances created by the HPA vs the low resource `requests` and `limits` settings, is too high.
 
+> **Show Pods and Nodes.**
+
+Run `kubectl get pod -o wide`.
+
+> **Deploy Pods in different nodes.**
+
+Having Pods of the same Service in the same Node does not make any sense. To deploy Pods automatically in different Nodes a PodAntiAffinity rule must be created.
+See `https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#always-co-located-in-the-same-node`.
+
+> **Show Pods or Nodes metrics.**
+
+Run `kubectl top [node/pod] (--all-namespaces)`.
+
 ---
 
 - https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/

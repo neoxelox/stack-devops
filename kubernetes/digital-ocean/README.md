@@ -35,6 +35,7 @@ Remember to change parameters as desired:
 Controller Service:
 
 - `Annotations`:
+  - `service.beta.kubernetes.io/do-loadbalancer-name: 'neoxelox.com'`
   - `service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'`
   - `service.beta.kubernetes.io/do-loadbalancer-size-slug: 'lb-small'`
 

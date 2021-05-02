@@ -1,4 +1,4 @@
-
+# Source: ingress-nginx/templates/namespace.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -265,9 +265,10 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
+    service.beta.kubernetes.io/do-loadbalancer-name: 'neoxelox.com'
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'
     service.beta.kubernetes.io/do-loadbalancer-size-slug: 'lb-small'
-    # service.beta.kubernetes.io/do-loadbalancer-hostname: "k8s.neoxelox.com"
+    # service.beta.kubernetes.io/do-loadbalancer-hostname: 'k8s.neoxelox.com'
   labels:
     helm.sh/chart: ingress-nginx-3.23.0
     app.kubernetes.io/name: ingress-nginx
@@ -324,6 +325,16 @@ spec:
         app.kubernetes.io/component: controller
     spec:
       dnsPolicy: ClusterFirst
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: "app.kubernetes.io/component"
+                operator: In
+                values:
+                - controller
+            topologyKey: "kubernetes.io/hostname"
       containers:
         - name: controller
           image: k8s.gcr.io/ingress-nginx/controller:v0.44.0@sha256:3dd0fac48073beaca2d67a78c746c7593f9c575168a17139a9955a82c63c4b9a
